@@ -84,6 +84,35 @@
       "idiom" : "ipad",
       "size" : "83.5x83.5",
       "scale" : "2x"
+    },
+    {
+      "idiom" : "ios-marketing",
+      "size" : "1024x1024",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "VirtualTourist_76.png",
+      "unassigned" : true
+    },
+    {
+      "filename" : "VirtualTourist_120.png",
+      "unassigned" : true
+    },
+    {
+      "filename" : "VirtualTourist_152.png",
+      "unassigned" : true
+    },
+    {
+      "filename" : "VirtualTourist_180.png",
+      "unassigned" : true
+    },
+    {
+      "filename" : "VirtualTourist_512.png",
+      "unassigned" : true
+    },
+    {
+      "filename" : "VirtualTourist_1024.png",
+      "unassigned" : true
     }
   ],
   "info" : {
