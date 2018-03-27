@@ -16,11 +16,11 @@ class FlickrClient {
     
     private let API_KEY = "cbc9df918d4b165b90e5a22d9b1fab91"
     private let API_SECRET = "cf8b7f9920c51b1b"
-    
+    private let PER_PAGE = 30
+
     func fetchPhotosFor(pin : Pin, completion : @escaping (_ photos : [Photo]?) -> ()) {
       
-        let searchURL = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(API_KEY)&lat=\(pin.latitude)&lon=\(pin.longitude)&extras=url_m&format=json&nojsoncallback=1"
-        
+        let searchURL = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(API_KEY)&lat=\(pin.latitude)&lon=\(pin.longitude)&extras=url_m&per_page=\(PER_PAGE)&page=1&format=json&nojsoncallback=1"
         guard let url = URL(string: searchURL) else { return }
         let dispatchGroup = DispatchGroup()
         Alamofire.request(url).responseJSON { (response) in
