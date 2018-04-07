@@ -1,8 +1,9 @@
 //
 //  Pin+CoreDataProperties.swift
-//  
+//  VirtualTourist-Final
 //
-//  Created by E Nicole Hinckley on 3/26/18.
+//  Created by E Nicole Hinckley on 3/27/18.
+//  Copyright © 2018 E Nicole Hinckley. All rights reserved.
 //
 //
 
@@ -17,12 +18,15 @@ extension Pin : MKAnnotation {
         let longDegrees = CLLocationDegrees(longitude)
         return CLLocationCoordinate2D(latitude: latDegrees, longitude: longDegrees)
     }
+    
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Pin> {
         return NSFetchRequest<Pin>(entityName: "Pin")
     }
 
     @NSManaged public var latitude: Double
     @NSManaged public var longitude: Double
+    @NSManaged public var totalPages: Int16
+    @NSManaged public var currentPage: Int16
     @NSManaged public var photos: NSSet?
 
 }

@@ -17,7 +17,6 @@ class AlbumVC: UIViewController, UICollectionViewDelegateFlowLayout {
     // MARK: - Global
     
     var photos = [Photo]()
-
     var pin : Pin!
     
     // MARK: - Outlets
@@ -33,14 +32,16 @@ class AlbumVC: UIViewController, UICollectionViewDelegateFlowLayout {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+
         collectionView.delegate = self
         collectionView.dataSource = self
         
+        map.isScrollEnabled = false
         map.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        newCollectionButton.isEnabled = false
         noImagesFoundLabel.isHidden = true
     }
     
@@ -57,37 +58,40 @@ class AlbumVC: UIViewController, UICollectionViewDelegateFlowLayout {
         map.addAnnotation(pin!)
         
         if pin?.photos?.allObjects.count == 0 {
-    
             noImagesFoundLabel.isHidden = false
         } else {
             setExistingPhotos()
-       
             noImagesFoundLabel.isHidden = true
+        }
+        if pin.totalPages > 1 {
+            newCollectionButton.isEnabled = true
         }
     }
     
     // MARK: - Actions
-    
-    
-    
+        
     @IBAction func newCollectionButtonTapped() {
         
-        /* Checks to see if there are more photos to be found. This is wonky if there are EXACTLY 30 photos for an area, but that's going to be aa very rare case. Easily solvable with checking against the total image count on the pin. Might do this later. */
-    
-        
-        if photos.count < 30 {
-            let alert = UIAlertController(title: "Uh oh!", message: "There aren't more photos for this area", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            return
-        }
         /* Clears out pin's saved photos, clears out photos array and fetches new photos from Flickr */
-      
-        self.photos =  Shuffler.shared.shufflePhotosFor(pin: pin)!
-        collectionView.reloadData()
+        pin.photos = nil
+        photos = []
+        let totalPages = pin.totalPages
+        let currentPage = pin.currentPage
+        
+        if currentPage < totalPages {
+            pin.currentPage = pin.currentPage + 1
+        } else {
+            pin.currentPage = 1
+        }
+        
+        FlickrClient.shared.fetchPhotosFor(pin: pin) { (photos) in
+            if photos != nil {
+            self.photos = photos!
+            }
+            self.reloadDataWithAnimation()
+        }
        
     }
-    
 
     // MARK: - Methods
     
@@ -96,10 +100,14 @@ class AlbumVC: UIViewController, UICollectionViewDelegateFlowLayout {
         self.photos = (pin?.photos?.allObjects)! as! [Photo]
         let shortPhotos  = photos.prefix(30)
         photos = Array(shortPhotos)
-        
+        reloadDataWithAnimation()
+    }
+    func reloadDataWithAnimation(){
         DispatchQueue.main.async {
-            self.noImagesFoundLabel.isHidden = true
-            self.collectionView.reloadData()
+        UIView.transition(with: self.collectionView,
+                          duration: 0.35,
+                          options: .transitionCrossDissolve,
+                          animations: { self.collectionView.reloadData() })
         }
     }
 }
@@ -115,13 +123,10 @@ extension AlbumVC : UICollectionViewDelegate, UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlbumCell", for: indexPath) as! AlbumCell
         let photo = photos[indexPath.row]
         cell.spinner.startAnimating()
-        if cell.picture != nil && cell.picture != #imageLiteral(resourceName: "placeholder") {
-            cell.spinner.stopAnimating()
-        }
         
         if photo.imageData != nil {
             print("WITH DATA")
-            cell.picture.image = UIImage.init(data: photo.imageData! as Data)
+            cell.picture.image = UIImage(data: photo.imageData! as Data)
             cell.spinner.stopAnimating()
         } else {
             print("WITH DOWNLOAD")
@@ -140,7 +145,7 @@ extension AlbumVC : UICollectionViewDelegate, UICollectionViewDataSource {
             CoreDataService.shared.viewContext.delete(photo)
             CoreDataService.shared.save()
             self.photos.remove(at: indexPath.row)
-            collectionView.reloadData()
+            self.reloadDataWithAnimation()
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)

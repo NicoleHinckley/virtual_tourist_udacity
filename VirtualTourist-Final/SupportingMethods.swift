@@ -16,25 +16,3 @@ extension UIColor {
         return color
     }
 }
-
-class Shuffler {
-    static let shared = Shuffler()
-    
-     func shufflePhotosFor(pin : Pin) -> [Photo]? {
-        var n = 30
-        guard let photoCount = pin.photos?.allObjects.count else { return nil}
-        guard let photos = pin.photos?.allObjects as? [Photo] else { return nil}
-        let shuffledPhotos = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: photos)
-        
-        
-        if photoCount < n {
-            n = photoCount
-        }
-        
-        let shortenedShuffledArray = shuffledPhotos[0..<n]
-        let postsArray = Array(shortenedShuffledArray) as! [Photo]
-        print(postsArray.count)
-        return postsArray
-}
-
-}

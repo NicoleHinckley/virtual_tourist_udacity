@@ -19,15 +19,19 @@ class FlickrClient {
     private let PER_PAGE = 30
 
     func fetchPhotosFor(pin : Pin, completion : @escaping (_ photos : [Photo]?) -> ()) {
-      
-        let searchURL = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(API_KEY)&lat=\(pin.latitude)&lon=\(pin.longitude)&extras=url_m&per_page=\(PER_PAGE)&page=1&format=json&nojsoncallback=1"
+     
+       let searchURL = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(API_KEY)&lat=\(pin.latitude)&lon=\(pin.longitude)&extras=url_m&per_page=\(PER_PAGE)&page=\(pin.currentPage)&format=json&nojsoncallback=1"
+        
         guard let url = URL(string: searchURL) else { return }
         let dispatchGroup = DispatchGroup()
         Alamofire.request(url).responseJSON { (response) in
             if let json = response.result.value as? [String : Any] {
                 guard let photosDict = json["photos"] as? [String : Any] else { return }
+                guard let totalPages = photosDict["pages"] as? Int else { return }
                 guard let photoArray = photosDict["photo"] as? [[String : Any]] else { return }
-                
+               
+                pin.totalPages = (Int16(totalPages))
+                print(pin.totalPages)
                 var photos = [Photo]()
                 
                 for photo in photoArray {
@@ -46,14 +50,15 @@ class FlickrClient {
                     }
                 }
                 CoreDataService.shared.save()
-
-               completion(photos)
-  
+                completion(photos)
             }
         }
         dispatchGroup.notify(queue: .main) {
             print("All data is saved 👍")
-            CoreDataService.shared.save()
+            CoreDataService.shared.save() // CoreData: error: Serious application error.  Exception was caught during Core Data change processing.  This is usually a bug within an observer of NSManagedObjectContextObjectsDidChangeNotification.  -[__NSCFSet addObject:]: attempt to insert nil with userInfo (null)
+            
+            // Cannot find the source of this error as I'm doing a do/try for all saving. This crash is VERY rarely happening and I can't reproduce it.
+            
         }
     }
     
