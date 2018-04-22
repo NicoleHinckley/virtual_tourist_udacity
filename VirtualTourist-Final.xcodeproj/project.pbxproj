@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		515359DC2069CF5500D0E90A /* SupportingMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515359DB2069CF5500D0E90A /* SupportingMethods.swift */; };
+		515359DC2069CF5500D0E90A /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515359DB2069CF5500D0E90A /* UIColorExtension.swift */; };
 		51994C07206AF96A00EDF189 /* Pin+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51994C05206AF96A00EDF189 /* Pin+CoreDataClass.swift */; };
 		51994C08206AF96A00EDF189 /* Pin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51994C06206AF96A00EDF189 /* Pin+CoreDataProperties.swift */; };
 		51B95FF72068D331008C020F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B95FF62068D331008C020F /* AppDelegate.swift */; };
@@ -27,7 +27,7 @@
 
 /* Begin PBXFileReference section */
 		161F2E84F7DE5D240947EB76 /* Pods-VirtualTourist-Final.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualTourist-Final.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VirtualTourist-Final/Pods-VirtualTourist-Final.debug.xcconfig"; sourceTree = "<group>"; };
-		515359DB2069CF5500D0E90A /* SupportingMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportingMethods.swift; sourceTree = "<group>"; };
+		515359DB2069CF5500D0E90A /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		51994C05206AF96A00EDF189 /* Pin+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pin+CoreDataClass.swift"; sourceTree = "<group>"; };
 		51994C06206AF96A00EDF189 /* Pin+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pin+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		51B95FF32068D331008C020F /* VirtualTourist-Final.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "VirtualTourist-Final.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				51B960212068EC91008C020F /* AlbumCell.swift */,
+				515359DB2069CF5500D0E90A /* UIColorExtension.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -128,7 +129,6 @@
 				51B960022068D331008C020F /* LaunchScreen.storyboard */,
 				51B960052068D331008C020F /* Info.plist */,
 				51B95FFD2068D331008C020F /* VirtualTourist_Final.xcdatamodeld */,
-				515359DB2069CF5500D0E90A /* SupportingMethods.swift */,
 			);
 			path = "VirtualTourist-Final";
 			sourceTree = "<group>";
@@ -288,7 +288,7 @@
 				51B9601B2068E7F0008C020F /* Photo+CoreDataClass copy.swift in Sources */,
 				51B9600E2068D6C5008C020F /* CoreDataService.swift in Sources */,
 				51B960202068EB4F008C020F /* AlbumVC.swift in Sources */,
-				515359DC2069CF5500D0E90A /* SupportingMethods.swift in Sources */,
+				515359DC2069CF5500D0E90A /* UIColorExtension.swift in Sources */,
 				51B95FF72068D331008C020F /* AppDelegate.swift in Sources */,
 				51B9601C2068E7F0008C020F /* Photo+CoreDataProperties copy.swift in Sources */,
 				51B960222068EC91008C020F /* AlbumCell.swift in Sources */,
