@@ -1,0 +1,6 @@
+framework module Pods_VirtualTourist_Final {
+  umbrella header "Pods-VirtualTourist-Final-umbrella.h"
+
+  export *
+  module * { export * }
+}
