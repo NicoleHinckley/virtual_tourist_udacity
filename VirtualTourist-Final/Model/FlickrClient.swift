@@ -31,15 +31,12 @@ class FlickrClient {
                 guard let photoArray = photosDict["photo"] as? [[String : Any]] else { return }
                
                 pin.totalPages = (Int16(totalPages))
-                print(pin.totalPages)
+              
                 var photos = [Photo]()
                 
                 for photo in photoArray {
                     dispatchGroup.enter()
-                    
-                    
                     if let url = photo["url_m"] as? String {
-             
                       let photo = Photo(context: CoreDataService.shared.viewContext)
                       photo.downloadURL = url
                       photo.pin = pin

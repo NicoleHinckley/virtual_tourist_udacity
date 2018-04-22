@@ -14,8 +14,6 @@ class AlbumCell: UICollectionViewCell {
     @IBOutlet weak var picture : UIImageView!
     @IBOutlet weak var spinner : UIActivityIndicatorView!
     
-    let imageCache = NSCache<AnyObject, AnyObject>()
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         spinner.hidesWhenStopped = true

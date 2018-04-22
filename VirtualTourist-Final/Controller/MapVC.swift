@@ -44,7 +44,6 @@ class MapVC : UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         /* Passes the selected pin to the next View Controller */
-        
         if segue.identifier == "toAlbum" {
             let destinationVC = segue.destination as! AlbumVC
             destinationVC.pin = (sender as! Pin)
@@ -54,7 +53,7 @@ class MapVC : UIViewController {
     // MARK: - Methods -
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
         isInEditingMode = !isInEditingMode
-            // Show the hint when controller in "editing" mode
+        // Show the hint when controller in "editing" mode
         
         if isInEditingMode {
             editButton.title = "Done"
@@ -62,10 +61,9 @@ class MapVC : UIViewController {
             editButton.title = "Edit"
         }
         
-        
         UIView.animate(withDuration: 0.3, animations: {
             self.view.frame.origin.y += self.hintView.frame.height * (self.isInEditingMode ? -1 : 1)
-            })
+        })
     }
     
     func setupMap(){

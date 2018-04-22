@@ -27,8 +27,6 @@ class AlbumVC: UIViewController, UICollectionViewDelegateFlowLayout {
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     @IBOutlet weak var noImagesFoundLabel : UILabel!
 
-    
-    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -125,11 +123,9 @@ extension AlbumVC : UICollectionViewDelegate, UICollectionViewDataSource {
         cell.spinner.startAnimating()
         
         if photo.imageData != nil {
-            print("WITH DATA")
             cell.picture.image = UIImage(data: photo.imageData! as Data)
             cell.spinner.stopAnimating()
         } else {
-            print("WITH DOWNLOAD")
             cell.picture.sd_setImage(with: URL(string: photo.downloadURL!)!, placeholderImage: #imageLiteral(resourceName: "placeholder"), options: [], completed: { (image, error, cache, url) in
                  cell.spinner.stopAnimating()
             })
@@ -156,7 +152,6 @@ extension AlbumVC : UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width / 3.0 - 2
         let height = width
-        
         return CGSize(width: width, height: height)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
