@@ -10,6 +10,14 @@ import Foundation
 import Alamofire
 import GameKit
 
+
+enum FlickrKeys : String {
+    case photosDict = "photos"
+    case totalPages = "pages"
+    case photoArray = "photo"
+    case photoURL = "url_m"
+}
+
 class FlickrClient {
    
     static let shared = FlickrClient()
@@ -26,9 +34,9 @@ class FlickrClient {
         let dispatchGroup = DispatchGroup()
         Alamofire.request(url).responseJSON { (response) in
             if let json = response.result.value as? [String : Any] {
-                guard let photosDict = json["photos"] as? [String : Any] else { return }
-                guard let totalPages = photosDict["pages"] as? Int else { return }
-                guard let photoArray = photosDict["photo"] as? [[String : Any]] else { return }
+                guard let photosDict = json[FlickrKeys.photosDict.rawValue] as? [String : Any] else { return }
+                guard let totalPages = photosDict[FlickrKeys.totalPages.rawValue] as? Int else { return }
+                guard let photoArray = photosDict[FlickrKeys.photoArray.rawValue] as? [[String : Any]] else { return }
                
                 pin.totalPages = (Int16(totalPages))
               
@@ -36,7 +44,7 @@ class FlickrClient {
                 
                 for photo in photoArray {
                     dispatchGroup.enter()
-                    if let url = photo["url_m"] as? String {
+                    if let url = photo[FlickrKeys.photoURL.rawValue] as? String {
                       let photo = Photo(context: CoreDataService.shared.viewContext)
                       photo.downloadURL = url
                       photo.pin = pin
@@ -52,16 +60,13 @@ class FlickrClient {
         }
         dispatchGroup.notify(queue: .main) {
             print("All data is saved 👍")
-            CoreDataService.shared.save() // CoreData: error: Serious application error.  Exception was caught during Core Data change processing.  This is usually a bug within an observer of NSManagedObjectContextObjectsDidChangeNotification.  -[__NSCFSet addObject:]: attempt to insert nil with userInfo (null)
-            
-            // Cannot find the source of this error as I'm doing a do/try for all saving. This crash is VERY rarely happening and I can't reproduce it.
-            
+            CoreDataService.shared.save()
         }
     }
     
     func downloadImageDataFor(photo : Photo, completion : @escaping () -> ()){
-        
-        guard let url = URL(string : photo.downloadURL!) else { return }
+        guard let photoURL = photo.downloadURL else { return }
+        guard let url = URL(string : photoURL) else { return }
         DispatchQueue.global().async {
             guard let imageData = NSData(contentsOf: url) else { return }
             photo.imageData = imageData
